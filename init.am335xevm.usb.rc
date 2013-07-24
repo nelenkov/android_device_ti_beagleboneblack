@@ -1,0 +1,12 @@
+on fs
+    mkdir /dev/usb-ffs 0770 shell shell
+    mkdir /dev/usb-ffs/adb 0770 shell shell
+    mount functionfs adb /dev/usb-ffs/adb uid=2000,gid=2000
+
+on property:sys.usb.config=none
+    stop adbd
+    setprop sys.usb.state ${sys.usb.config}
+
+on property:sys.usb.config=adb
+    start adbd
+    setprop sys.usb.state ${sys.usb.config}
